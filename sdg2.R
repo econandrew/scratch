@@ -60,3 +60,12 @@ png(
 )
 grid.draw(fig_sdg2_undernourish_map()$plot(style_atlas(), aspect_ratio = 2.0))
 dev.off()
+
+png(
+  filename = paste0(imgname, "_facebook.png"),
+  width = 1200,
+  height = 630,
+  res = 192
+)
+grid.draw(fig_sdg2_undernourish_map()$plot(style_atlas(), aspect_ratio = 2.0))
+dev.off()
