@@ -8,6 +8,7 @@ library(forcats)
 library(tidyr)
 library(gtable)
 library(stringr)
+library(grid)
 source("styles.R")
 
 fig_sdg2_undernourish_map <- function(year = 2015) {
@@ -30,8 +31,8 @@ fig_sdg2_undernourish_map <- function(year = 2015) {
 
   figure(
     data = df,
-    plot = function(df, style = style_atlas(), quality = "low") {
-      g <- wbg_choropleth(df, wbgmaps[[quality]], style, variable = "bins")
+    plot = function(df, style = style_atlas(), quality = "low", aspect_ratio = 1.2) {
+      g <- wbg_choropleth(df, wbgmaps[[quality]], style, variable = "bins", aspect_ratio = aspect_ratio)
       g$theme <- style$theme()
       g
     },
@@ -42,16 +43,20 @@ fig_sdg2_undernourish_map <- function(year = 2015) {
   )
 }
 
+imgname <- "fig_sdg2_undernourish_map"
+
 figure_save_draft_png(
   fig_sdg2_undernourish_map(),
   style_atlas,
-  "fig_sdg2_undernourish_map.png",
+  paste0(imgname, ".png"),
   width = 5.5, height = 4.5
 )
 
-figure_save_web_png(
-  fig_sdg2_undernourish_map(),
-  style_atlas,
-  "fig_sdg2_undernourish_map.png",
-  width = 5.5, height = 4.5
+png(
+  filename = paste0(imgname, "_twitter.png"),
+  width = 1024,
+  height = 512,
+  res = 192
 )
+grid.draw(fig_sdg2_undernourish_map()$plot(style_atlas(), aspect_ratio = 2.0))
+dev.off()
